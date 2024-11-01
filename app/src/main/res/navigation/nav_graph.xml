@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.weatherapp.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.weatherapp.ui.favorites.allfavorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_favoritesFragment_to_favoriteDetailsFragment"
+            app:destination="@id/favoriteDetailsFragment"
+            app:popUpTo="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.weatherapp.ui.setting.SettingFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.weatherapp.ui.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <argument
+            android:name="isFav"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/alertsFragment"
+        android:name="com.example.weatherapp.ui.alerts.allalerts.AlertsFragment"
+        android:label="fragment_alerts"
+        tools:layout="@layout/fragment_alerts" >
+        <action
+            android:id="@+id/action_alertsFragment_to_alertDialogFragment"
+            app:destination="@id/alertDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteDetailsFragment"
+        android:name="com.example.weatherapp.ui.favorites.favoritedetails.FavoriteDetailsFragment"
+        android:label="fragment_favorite_details"
+        tools:layout="@layout/fragment_favorite_details" >
+        <argument
+            android:name="weather"
+            app:argType="com.example.weatherapp.data.pojo.CurrentWeatherResponse" />
+    </fragment>
+    <dialog
+        android:id="@+id/alertDialogFragment"
+        android:name="com.example.weatherapp.ui.alerts.dialog.AlertDialogFragment"
+        android:label="fragment_alert_dialog"
+        tools:layout="@layout/fragment_alert_dialog" />
+</navigation>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<navigation xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/nav_graph"-->
+<!--    app:startDestination="@id/homeFragment">-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/homeFragment"-->
+<!--        android:name="com.example.weatherapp.ui.home.HomeFragment"-->
+<!--        android:label="Home"-->
+<!--        tools:layout="@layout/fragment_home">-->
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_mapFragment"-->
+<!--            app:destination="@id/mapFragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/favoritesFragment"-->
+<!--        android:name="com.example.weatherapp.ui.favorites.allfavorites.FavoritesFragment"-->
+<!--        android:label="Favorites"-->
+<!--        tools:layout="@layout/fragment_favorites">-->
+<!--        <action-->
+<!--            android:id="@+id/action_favoritesFragment_to_mapFragment"-->
+<!--            app:destination="@id/mapFragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--        <action-->
+<!--            android:id="@+id/action_favoritesFragment_to_favoriteDetailsFragment"-->
+<!--            app:destination="@id/favoriteDetailsFragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"/>-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/settingsFragment"-->
+<!--        android:name="com.example.weatherapp.ui.setting.SettingFragment"-->
+<!--        android:label="Settings"-->
+<!--        tools:layout="@layout/fragment_setting" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/mapFragment"-->
+<!--        android:name="com.example.weatherapp.ui.map.MapFragment"-->
+<!--        android:label="Map"-->
+<!--        tools:layout="@layout/fragment_map">-->
+<!--&lt;!&ndash;        <argument&ndash;&gt;-->
+<!--&lt;!&ndash;            android:name="isFav"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:argType="boolean"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:defaultValue="false" />&ndash;&gt;-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/alertsFragment"-->
+<!--        android:name="com.example.weatherapp.ui.alerts.allalerts.AlertsFragment"-->
+<!--        android:label="Alerts"-->
+<!--        tools:layout="@layout/fragment_alerts">-->
+<!--        <action-->
+<!--            android:id="@+id/action_alertsFragment_to_alertDialogFragment"-->
+<!--            app:destination="@id/alertDialogFragment" />-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/favoriteDetailsFragment"-->
+<!--        android:name="com.example.weatherapp.ui.favorites.favoritedetails.FavoriteDetailsFragment"-->
+<!--        android:label="Favorite Details"-->
+<!--        tools:layout="@layout/fragment_favorite_details">-->
+<!--&lt;!&ndash;        <argument&ndash;&gt;-->
+<!--&lt;!&ndash;            android:name="weather"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:argType="com.example.weatherapp.data.pojo.CurrentWeatherResponse" />&ndash;&gt;-->
+<!--    </fragment>-->
+
+<!--    <dialog-->
+<!--        android:id="@+id/alertDialogFragment"-->
+<!--        android:name="com.example.weatherapp.ui.alerts.dialog.AlertDialogFragment"-->
+<!--        android:label="Alert Dialog"-->
+<!--        tools:layout="@layout/fragment_alert_dialog" />-->
+<!--</navigation>-->
