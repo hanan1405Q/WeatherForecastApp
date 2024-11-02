@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_1"
-    tools:context=".ui.favorites.favoritedetails.FavoriteDetailsFragment">
+    tools:context=".view.favorites.favoritedetails.FavoriteDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -8,7 +8,7 @@
     android:background="@color/bg_2"
     android:layoutDirection="locale"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.dialog.ChooseDialogFragment">
+    tools:context=".view.dialog.ChooseDialogFragment">
 
     <TextView
         android:id="@+id/tv_tittle"

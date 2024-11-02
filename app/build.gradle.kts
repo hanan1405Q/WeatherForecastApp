@@ -82,10 +82,9 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.13.0")
 
     //Room
-    annotationProcessor ("androidx.room:room-compiler:2.5.2")
-    implementation ("androidx.room:room-ktx:2.5.2")
-    implementation ("androidx.room:room-runtime:2.5.2")
-    kapt ("androidx.room:room-compiler:2.5.2")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     //Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")

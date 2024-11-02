@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_1"
     android:layoutDirection="locale"
-    tools:context=".ui.setting.SettingFragment">
+    tools:context=".view.setting.SettingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

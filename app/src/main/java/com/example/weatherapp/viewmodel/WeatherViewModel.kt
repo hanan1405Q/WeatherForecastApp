@@ -7,17 +7,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.pojo.CurrentWeatherResponse
-import com.example.weatherapp.data.pojo.DailyForecast
-import com.example.weatherapp.data.pojo.HourlyForecast
-import com.example.weatherapp.data.pojo.UserLocation
-import com.example.weatherapp.data.pojo.toDailyForecasts
-import com.example.weatherapp.data.pojo.toHourlyForecastsForToday
-import com.example.weatherapp.data.repository.WeatherRepo
+import com.example.weatherapp.model.pojo.CurrentWeatherResponse
+import com.example.weatherapp.model.pojo.DailyForecast
+import com.example.weatherapp.model.pojo.HourlyForecast
+import com.example.weatherapp.model.pojo.UserLocation
+import com.example.weatherapp.model.pojo.WeatherAlert
+import com.example.weatherapp.model.pojo.toDailyForecasts
+import com.example.weatherapp.model.pojo.toHourlyForecastsForToday
+import com.example.weatherapp.model.repository.WeatherRepo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -42,36 +44,13 @@ class WeatherViewModel(private val _repo:WeatherRepo,private val mFusedLocationP
     private val _dailyForecastState = MutableStateFlow<ApiState<List<DailyForecast>>>(ApiState.Loading())
     val dailyForecastState: StateFlow<ApiState<List<DailyForecast>>> = _dailyForecastState
 
+    // StateFlow to hold the Favourite data
+    private val _favLocations:MutableStateFlow<MutableList<UserLocation>> =MutableStateFlow(mutableListOf())
+    var favLocations:StateFlow<MutableList<UserLocation>> =_favLocations
 
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            val myLocation = locationResult.lastLocation
-            myLocation?.let {
-                val location = UserLocation(it.latitude,it.longitude)
-                locationLiveData.value = location
-            }
-            stopLocationUpdates()
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    fun requestNewLocationData() {
-        Log.d("SharedViewModel", "requestNewLocationData is here")
-        val mLocationRequest = LocationRequest().apply {
-            setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-            setInterval(0)
-        }
-
-        mFusedLocationProviderClient.requestLocationUpdates(
-            mLocationRequest,
-            locationCallback,
-            Looper.myLooper()
-        )
-    }
-    private fun stopLocationUpdates() {
-        mFusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
+    // StateFlow to hold Alerts
+    private val _alerts:MutableStateFlow<MutableList<WeatherAlert>> = MutableStateFlow(mutableListOf())
+    var alerts:StateFlow<MutableList<WeatherAlert>> =_alerts
 
     // Fetch the current weather and update state
     fun fetchCurrentWeather(lat: Double, long: Double, unit: String, lang: String) {
@@ -111,10 +90,81 @@ class WeatherViewModel(private val _repo:WeatherRepo,private val mFusedLocationP
         }
     }
 
+    fun getFavorites(){
+        viewModelScope.launch{
+            _repo.getFavorites().collect{
+                _favLocations.value=it
+            }
+        }
+    }
+
+    fun addToFav(location: UserLocation){
+        viewModelScope.launch{
+            _repo.addToFav(location)
+            getFavorites()
+        }
+    }
+
+    fun removeFromFav(location: UserLocation){
+        viewModelScope.launch{
+            _repo.removeFromFav(location)
+            getFavorites()
+        }
+    }
+
+    fun getAlerts(){
+        viewModelScope.launch{
+            _repo.getAlerts().collect{
+                _alerts.value=it
+            }
+        }
+    }
+
+    fun addToAlert(alert: WeatherAlert){
+        viewModelScope.launch{
+            _repo.addAlert(alert)
+            getAlerts()
+        }
+    }
+
+    fun removeFromAlert(alert: WeatherAlert){
+        viewModelScope.launch {
+            _repo.removeAlert(alert)
+            getAlerts()
+        }
+    }
+
+
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val myLocation = locationResult.lastLocation
+            myLocation?.let {
+                val location = UserLocation(lat=it.latitude,lon=it.longitude)
+                locationLiveData.value = location
+            }
+            stopLocationUpdates()
+        }
+    }
+    @SuppressLint("MissingPermission")
+    fun requestNewLocationData() {
+        Log.d("SharedViewModel", "requestNewLocationData is here")
+        val mLocationRequest = LocationRequest().apply {
+            setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            setInterval(0)
+        }
+
+        mFusedLocationProviderClient.requestLocationUpdates(
+            mLocationRequest,
+            locationCallback,
+            Looper.myLooper()
+        )
+    }
+    private fun stopLocationUpdates() {
+        mFusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
 }
-
-
-
 
 /*
 * ..Act as a Recipe to create object from WeatherViewModel through ViewModelProvider
@@ -125,9 +175,6 @@ class WeatherViewModelFactory(private val _repo:WeatherRepo,private val mFused:F
         return WeatherViewModel(_repo,mFused) as T
     }
 }
-
-
-
 
 sealed class ApiState<T> {
     class Success<T>(val data: T) : ApiState<T>()

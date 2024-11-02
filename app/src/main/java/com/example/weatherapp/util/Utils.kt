@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.DisplayMetrics
 import androidx.annotation.RequiresApi
 import com.example.weatherapp.R
-import com.example.weatherapp.data.local.HelperSharedPreference
+import com.example.weatherapp.model.local.HelperSharedPreference
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -128,7 +128,7 @@ object Utils {
             val addressList = geocoder.getFromLocation(lat, lon, 1)
             if (addressList != null) {
                 if (addressList.isNotEmpty()) {
-                    address = "${addressList[0].adminArea}, ${addressList[0].countryName}"
+                    address = "${addressList[0].subAdminArea},${addressList[0].adminArea}, ${addressList[0].countryName}"
                 }
             }
         } catch (e: IOException) {
